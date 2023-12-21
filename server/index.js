@@ -3,12 +3,16 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth");
 const messageRoutes = require("./routes/messages");
+const path = require('path');
 const app = express();
 const socket = require("socket.io");
 require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
+// Serve React static files
+app.use(express.static(path.join(__dirname, 'public/build')));
+
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -24,6 +28,10 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
+// Serve React app for all other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/build/index.html'));
+});
 
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on ${process.env.PORT}`)
