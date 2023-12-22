@@ -1,5 +1,6 @@
 const { exec } = require('child_process');
 
+
 // Function to run build commands for each folder
 function buildFolder(folderName, buildCommand) {
   return new Promise((resolve, reject) => {
