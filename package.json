@@ -10,7 +10,7 @@
    
     "dev": "concurrently \"npm run client\" \"npm run server\"", 
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "cd server && npm install && npm run build && cd ../public && npm install && npm run build && cd .. && cp -r public/build server",
+    
     "build": "cd public && npm run build"
   },
   "author": "",
