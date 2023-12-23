@@ -1,3 +1,6 @@
+import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+
 const { exec } = require('child_process');
 
 
