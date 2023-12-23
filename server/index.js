@@ -16,8 +16,8 @@ app.use(express.static(path.join(__dirname, 'public/build')));
 
 mongoose
   .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
   })
   .then(() => {
     console.log("DB Connetion Successfull");
