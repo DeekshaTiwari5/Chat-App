@@ -113,7 +113,10 @@ export default function ChatContainer({ currentChat, socket }) {
             <div className="content ">
               <p>{message.message}</p>
               {/* Add a delete button/icon */}
-              <button onClick={() => deleteMessage(index)}><MdDeleteOutline /></button>
+              {message.fromSelf && ( // Show delete button only for self messages
+              <button   className="delete-button" 
+              onClick={() => deleteMessage(index)}><MdDeleteOutline /></button>
+              )}
             </div>
               </div>
             </div>
@@ -179,9 +182,25 @@ const Container = styled.div`
         color: #d1d1d1;
         @media screen and (min-width: 720px) and (max-width: 1080px) {
           max-width: 70%;
+          position: relative; /* Ensure button position relative to the message */
+          cursor: default; /* Set cursor style */
+      
+          /* Style the delete button */
+          .delete-button {
+            position: absolute;
+            top: 0;
+            right: -2rem; /* Adjust as needed */
+            opacity: 0; /* Hide by default */
+            transition: opacity 0.3s ease; /* Add a transition effect */
+          }
+      
+          /* Show the delete button on hover */
+          &:hover .delete-button {
+            opacity: 1;
+          }
         }
       }
-    }
+        
     .sended {
       justify-content: flex-end;
       .content {
