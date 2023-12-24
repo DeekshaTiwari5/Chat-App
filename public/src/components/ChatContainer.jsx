@@ -4,6 +4,7 @@ import ChatInput from "./ChatInput";
 import Logout from "./Logout";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import { MdDeleteOutline } from "react-icons/md";
 import { sendMessageRoute, recieveMessageRoute } from "../utils/APIRoutes";
 
 export default function ChatContainer({ currentChat, socket }) {
@@ -67,6 +68,12 @@ export default function ChatContainer({ currentChat, socket }) {
     setMessages(msgs);
   };
 
+  const deleteMessage = (index) => {
+    const updatedMessages = [...messages];
+    updatedMessages.splice(index, 1);
+    setMessages(updatedMessages);
+  };
+  
   useEffect(() => {
     if (socket.current) {
       socket.current.on("msg-recieve", (msg) => {
@@ -100,22 +107,18 @@ export default function ChatContainer({ currentChat, socket }) {
         <Logout />
       </div>
       <div className="chat-messages">
-        {messages.map((message) => {
-          return (
-            <div ref={scrollRef} key={uuidv4()}>
-              <div
-                className={`message ${
-                  message.fromSelf ? "sended" : "recieved"
-                }`}
-              >
-                <div className="content ">
-                  <p>{message.message}</p>
-                </div>
+      {messages.map((message, index) => (
+        <div ref={scrollRef} key={uuidv4()}>
+          <div className={`message ${message.fromSelf ? "sended" : "recieved"}`}>
+            <div className="content ">
+              <p>{message.message}</p>
+              {/* Add a delete button/icon */}
+              <button onClick={() => deleteMessage(index)}><MdDeleteOutline /></button>
+            </div>
               </div>
             </div>
-          );
-        })}
-      </div>
+           ))}
+           </div>
       <ChatInput handleSendMsg={handleSendMsg} />
     </Container>
   );

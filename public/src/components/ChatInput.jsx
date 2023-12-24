@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import { BsEmojiSmileFill } from "react-icons/bs";
-import { IoMdSend } from "react-icons/io";
+import { IoMdSend, IoIosClose } from "react-icons/io";
 import styled from "styled-components";
 import Picker from "emoji-picker-react";
 
 export default function ChatInput({ handleSendMsg }) {
   const [msg, setMsg] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
   const handleEmojiPickerhideShow = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
   const handleEmojiClick = (event, emojiObject) => {
-    let message = msg;
-    message += emojiObject.emoji;
-    setMsg(message);
+    if (emojiObject && emojiObject.hasOwnProperty('emoji')) {
+      const updatedMessage = msg + emojiObject.emoji;
+      setMsg(updatedMessage);
+    } else if (event && event.hasOwnProperty('emoji')) {
+      const updatedMessage = msg + event.emoji;
+      setMsg(updatedMessage);
+    } else {
+      console.error('Invalid or undefined emoji data:', emojiObject, event);
+    }
   };
 
   const sendChat = (event) => {
@@ -23,6 +30,11 @@ export default function ChatInput({ handleSendMsg }) {
       handleSendMsg(msg);
       setMsg("");
     }
+  };
+
+  const deleteMessage = () => {
+    setMsg(""); // Clears the message input
+    // Add logic to delete the sent message from the chat history if necessary
   };
 
   return (
@@ -43,10 +55,17 @@ export default function ChatInput({ handleSendMsg }) {
         <button type="submit">
           <IoMdSend />
         </button>
+        {msg && ( // Display delete button only when message is present
+          <button onClick={deleteMessage}>
+            <IoIosClose/>
+          </button>
+        )}
       </form>
     </Container>
   );
 }
+
+
 
 const Container = styled.div`
   display: grid;
